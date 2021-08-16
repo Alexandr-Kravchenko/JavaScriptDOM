@@ -1,0 +1,31 @@
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0 auto;
+    width: 50%;
+}
+
+.todolist {
+    width: 100%;
+}
+
+.todolist,
+td {
+    border-collapse: collapse;
+    border: solid 1px black;
+}
+
+.description {
+    font-weight: 300;
+}
+
+.title.done {
+    color: grey;
+    text-decoration: line-through;
+}
+
+.due-date.due {
+    color: red;
+}

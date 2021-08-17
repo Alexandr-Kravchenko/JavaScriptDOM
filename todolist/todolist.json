@@ -1,0 +1,18 @@
+{
+  "todolist": [
+    {
+      "title": "blabla",
+      "status": false,
+      "due_date": "2021-09-24",
+      "description": "blablalblbbla",
+      "id": 1
+    },
+    {
+      "title": "blabla",
+      "status": "false",
+      "due_date": "2021-09-24",
+      "description": "blablalblbbla",
+      "id": 2
+    }
+  ]
+}

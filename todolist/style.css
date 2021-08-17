@@ -11,8 +11,7 @@ body {
     width: 100%;
 }
 
-.todolist,
-td {
+.todolist, td {
     border-collapse: collapse;
     border: solid 1px black;
 }
@@ -28,4 +27,47 @@ td {
 
 .due-date.due {
     color: red;
+}
+
+.terminator:hover {
+    cursor: pointer;
+    color: red;
+}
+
+.toggle {
+    margin: 0 auto;
+}
+
+button {
+    border: solid 1px black;
+    border-radius: 0%;
+    float: left;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+button.active {
+    background-color: white;
+}
+
+button.all {
+    border-top-right-radius: 0%;
+    border-bottom-right-radius: 0%;
+}
+
+button.opened {
+    border-top-left-radius: 0%;
+    border-bottom-left-radius: 0%;
+}
+
+.add-todo {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.add-todo input {
+    width: 35%;
 }

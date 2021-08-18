@@ -2,12 +2,19 @@ let inc = (init = 0) => () => ++init;
 let genId = inc();
 
 class Todo {
-    constructor(title = 'Default Title', description = '', status = false, due_date = new Date()) {
-        this.id = genId()
-        this.title = title;
-        this.description = description;
-        this.status = status;
-        this.due_date = new Date(due_date);
+    constructor(titleOrObject = 'Default Title', description = '', status = false, due_date = new Date()) {
+        if(typeof titleOrObject === 'object') {
+            Object.assign(this, titleOrObject);
+            this.id = genId()
+            this.status = status;
+            this.due_date = titleOrObject.due_date ? new Date(titleOrObject.due_date) : '';
+        } else {
+            this.id = genId()
+            this.title = titleOrObject;
+            this.description = description;
+            this.status = status;
+            this.due_date = new Date(due_date);
+        }
     }
 }
 
@@ -34,9 +41,9 @@ function getOpenedTodo(list) {
     return list.filter(todo => todo.status === false);
 }
 
-const tableBody = document.querySelector('.todolist tbody');
+const todolistBody = document.querySelector('.todolist tbody');
 
-tableBody.addEventListener('click', (e) => {
+todolistBody.addEventListener('click', (e) => {
     let item = e.target;
     let currentTodo = item.closest('tr');
 
@@ -48,6 +55,7 @@ tableBody.addEventListener('click', (e) => {
     if (item.className === 'status') {
         let title = currentTodo.querySelector('.title');
         title.classList.toggle('done')
+        
         let due_date = currentTodo.querySelector('.due-date');
         due_date.classList.remove('due');
 
@@ -63,9 +71,9 @@ tableBody.addEventListener('click', (e) => {
     }
 })
 
-const tableFoot = document.querySelector('.todolist tfoot');
+const todolistFoot = document.querySelector('.todolist tfoot');
 
-tableFoot.addEventListener('click', (e) => {
+todolistFoot.addEventListener('click', (e) => {
     let buttons = document.querySelectorAll('.toggle button');
     if (buttons.length >= 1) {
         buttons.forEach(button => button.classList.remove('active'));
@@ -80,6 +88,27 @@ tableFoot.addEventListener('click', (e) => {
         item.classList.toggle('active')
         drawTodolist(allOpenedTodo);
     }
+})
+
+const addTodoForm = document.forms['add-todo'];
+
+addTodoForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(addTodoForm);
+    const todo = new Todo(Object.fromEntries(data.entries()));
+    todolist.push(todo);
+
+    let buttons = document.querySelectorAll('.toggle button');
+
+    if (buttons[0].className === 'all active') {
+        drawTodolist(todolist);
+    }
+    if (buttons[1].className === 'opened active') {
+        let allOpenedTodo = getOpenedTodo(todolist);
+        drawTodolist(allOpenedTodo);
+    }
+
+    addTodoForm.reset()
 })
 
 drawTodolist(todolist);

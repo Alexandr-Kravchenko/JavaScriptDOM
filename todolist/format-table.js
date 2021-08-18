@@ -29,8 +29,10 @@ function createStatus(status) {
 function createDueDate(due_date) {
     let Due_date = document.createElement('td');
     Due_date.className = 'due-date';
-    if (isDue(due_date)) Due_date.classList.add('due');
-    Due_date.innerText = due_date.toLocaleDateString();
+    if(due_date) {
+        if (isDue(due_date)) Due_date.classList.add('due');
+        Due_date.innerText = due_date.toLocaleDateString();
+    }
 
     return Due_date;
 }

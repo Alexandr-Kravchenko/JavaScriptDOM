@@ -1,15 +1,10 @@
-let inc = (init = 0) => () => ++init;
-let genId = inc();
-
 class Todo {
     constructor(titleOrObject = 'Default Title', description = '', status = false, due_date = new Date()) {
-        if(typeof titleOrObject === 'object') {
+        if (typeof titleOrObject === 'object') {
             Object.assign(this, titleOrObject);
-            this.id = genId()
-            this.status = status;
             this.due_date = titleOrObject.due_date ? new Date(titleOrObject.due_date) : '';
+            this.status = titleOrObject.status ?? false;
         } else {
-            this.id = genId()
             this.title = titleOrObject;
             this.description = description;
             this.status = status;
@@ -19,20 +14,22 @@ class Todo {
 }
 
 const todolist = [
-    new Todo('To Be Happy', 'I want to be free from my ...', true, '2021-08-20'),
-    new Todo('To find smth new in myself', '', false, '2021-08-17'),
-    new Todo('To break everything troubles', 'To find solution', false, '2021-08-15')
+    /*     new Todo('To Be Happy', 'I want to be free from my ...', true, '2021-08-20'),
+        new Todo('To find smth new in myself', '', false, '2021-08-17'),
+        new Todo('To break everything troubles', 'To find solution', false, '2021-08-15') */
 ];
 
 function removeTodo(list, id) {
     let todo_id = list.findIndex(todo => todo.id === id);
     list.splice(todo_id, 1);
+    deleteTodo(id);
 }
 
 function changeStatusTodo(list, id) {
     list.find(todo => {
         if (todo.id === id) {
             todo.status = !todo.status;
+            updateTodo(todo, id);
         }
     });
 }
@@ -55,7 +52,7 @@ todolistBody.addEventListener('click', (e) => {
     if (item.className === 'status') {
         let title = currentTodo.querySelector('.title');
         title.classList.toggle('done')
-        
+
         let due_date = currentTodo.querySelector('.due-date');
         due_date.classList.remove('due');
 
@@ -94,21 +91,62 @@ const addTodoForm = document.forms['add-todo'];
 
 addTodoForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const data = new FormData(addTodoForm);
-    const todo = new Todo(Object.fromEntries(data.entries()));
-    todolist.push(todo);
+    const formData = new FormData(addTodoForm);
+    const todo = Object.fromEntries(formData.entries());
+    postTodo(todo)
+        .then(data => {
+            todolist.push(new Todo(data));
 
-    let buttons = document.querySelectorAll('.toggle button');
+            let buttons = document.querySelectorAll('.toggle button');
 
-    if (buttons[0].className === 'all active') {
-        drawTodolist(todolist);
-    }
-    if (buttons[1].className === 'opened active') {
-        let allOpenedTodo = getOpenedTodo(todolist);
-        drawTodolist(allOpenedTodo);
-    }
+            if (buttons[0].className === 'all active') {
+                drawTodolist(todolist);
+            }
+            if (buttons[1].className === 'opened active') {
+                let allOpenedTodo = getOpenedTodo(todolist);
+                drawTodolist(allOpenedTodo);
+            }
+        })
+        .then(_ => addTodoForm.reset());
 
-    addTodoForm.reset()
 })
 
-drawTodolist(todolist);
+function getTodoList() {
+    return fetch('http://localhost:3000/todolist')
+        .then(res => res.json())
+        .then(list => {
+            list.forEach(todo => todolist.push(new Todo(todo)));
+            drawTodolist(todolist);
+        });
+}
+
+function postTodo(todo) {
+    return fetch('http://localhost:3000/todolist', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(todo)
+    })
+        .then(res => res.json())
+}
+
+function updateTodo(todo, id) {
+    return fetch(`http://localhost:3000/todolist/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(todo)
+    })
+        .then(res => res.json())
+}
+
+function deleteTodo(id) {
+    return fetch(`http://localhost:3000/todolist/${id}`, {
+        method: 'DELETE'
+    })
+        .then(res => res.json())
+}
+
+getTodoList();

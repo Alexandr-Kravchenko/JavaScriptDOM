@@ -6,10 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todolist</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style/style.css">
 </head>
 
 <body>
+
+    <form class="add-todo" name="add-todo">
+        <h2>To Add Your Todo</h2>
+        <input type="text" name="title" required placeholder="Input title">
+        <input type="text" name="description" placeholder="Input description">
+        <input type="date" name="due_date">
+        <button type='submit'>Add</button>
+    </form>
+
+    <br>
 
     <table class="todolist">
         <caption>TodoList</caption>
@@ -29,16 +39,8 @@
         </tfoot>
     </table>
 
-    <form class="add-todo" name="add-todo">
-        <h2>To Add Your Todo</h2>
-        <input type="text" name="title" required placeholder="Input title">
-        <input type="text" name="description" placeholder="Input description">
-        <input type="date" name="due_date">
-        <button>Add</button>
-    </form>
-
-    <script type='text/javascript' src='format-table.js'></script>
-    <script type='text/javascript' src='modify-todolist.js'></script>
+    <script type='text/javascript' src='./js/format-table.js'></script>
+    <script type='text/javascript' src='./js/modify-todolist.js'></script>
 </body>
 
 </html>

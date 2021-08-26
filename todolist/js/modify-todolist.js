@@ -13,11 +13,7 @@ class Todo {
     }
 }
 
-const todolist = [
-    /*     new Todo('To Be Happy', 'I want to be free from my ...', true, '2021-08-20'),
-        new Todo('To find smth new in myself', '', false, '2021-08-17'),
-        new Todo('To break everything troubles', 'To find solution', false, '2021-08-15') */
-];
+const todolist = [];
 
 function removeTodo(list, id) {
     let todo_id = list.findIndex(todo => todo.id === id);

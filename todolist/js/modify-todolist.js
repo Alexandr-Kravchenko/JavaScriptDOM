@@ -64,9 +64,9 @@ todolistBody.addEventListener('click', (e) => {
     }
 })
 
-const todolistFoot = document.querySelector('.todolist tfoot');
+const todolistFooter = document.querySelector('.todolist tfoot');
 
-todolistFoot.addEventListener('click', (e) => {
+todolistFooter.addEventListener('click', (e) => {
     let buttons = document.querySelectorAll('.toggle button');
     if (buttons.length >= 1) {
         buttons.forEach(button => button.classList.remove('active'));

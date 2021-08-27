@@ -19,9 +19,9 @@ const any = (...args) => arg => args.some(dec => dec(arg) === true);
 
 let test = { color: 'black', width: 5, height: 5 };
 
-console.log(
-    any(isSquare, isBlack)(test)
-    );
+// console.log(
+//     any(isSquare, isBlack)(test)
+//     );
 
 const calcArea = rectangle => rectangle.width * rectangle.height;
 
@@ -47,7 +47,7 @@ const calcMaxBlackSquareArea = flow(
     reduce(compareSq, -Infinity)
 )
 
-// console.log(calcMaxBlackSquareArea(rectangles));
+console.log(calcMaxBlackSquareArea(rectangles));
 
 isRed = hasColor('red');
 
@@ -57,4 +57,4 @@ const calcAllSquarePerimeter = flow(
     map(calcPerimeter)
 )
 
-// console.log(calcAllSquarePerimeter(rectangles))
+console.log(calcAllSquarePerimeter(rectangles))
